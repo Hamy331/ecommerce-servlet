@@ -3,15 +3,17 @@
 }
 body {
     margin: 0;
+    background: #f6f6f7;
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #1f2328;
+}
+.auth {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px 16px;
-    background: #f6f6f7;
-    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    color: #1f2328;
 }
 .card {
     width: 100%;
@@ -169,12 +171,106 @@ a.btn-outline:hover, .btn-outline:hover {
 .divider + .btn {
     margin-top: 12px;
 }
-.demo-hint {
-    margin: 18px 0 0;
+
+/* trang home */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 24px;
+    background: #fff;
+    border-bottom: 1px solid #ececec;
+}
+.brand {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e8590c;
+}
+.brand:hover {
+    text-decoration: none;
+}
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.topbar-right form {
+    margin: 0;
+}
+.btn-small {
+    padding: 6px 12px;
+    border: 1px solid #dcdfe4;
+    border-radius: 8px;
+    background: #fff;
+    font-family: inherit;
+    cursor: pointer;
+}
+.btn-small:hover {
+    background: #f6f6f7;
+}
+.shop {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 16px 40px;
+}
+.page-title {
+    text-align: left;
+}
+.subtitle.left {
+    text-align: left;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+.product {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.15s, transform 0.15s;
+}
+.product:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+.thumb {
+    height: 180px;
+    padding: 12px;
+    background: #fafafa;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.thumb img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.product-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 12px 14px 14px;
+}
+.product-name {
+    margin: 0 0 4px;
+    font-weight: 600;
+    flex: 1;
+}
+.price {
+    margin: 0;
+    color: #e8590c;
+    font-weight: 700;
+    font-size: 15px;
+}
+.product .btn {
+    margin-top: 12px;
     padding: 8px;
-    background: #fff4ec;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 12px;
-    color: #6b7280;
 }

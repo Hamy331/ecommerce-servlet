@@ -1,6 +1,8 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/includes/header.jsp" />
+<div class="auth">
+<main class="card">
 
 <h1>Tạo tài khoản</h1>
 <p class="subtitle">Đăng ký để bắt đầu mua sắm tại MiniShop</p>
@@ -46,4 +48,6 @@
 <p class="divider"><span>Đã có tài khoản?</span></p>
 <a href="user?action=showLogin" class="btn btn-outline">Đăng nhập</a>
 
+</main>
+</div>
 <c:import url="/includes/footer.jsp" />

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/includes/header.jsp" />
+<div class="auth">
+<main class="card">
 
 <h1>Chào mừng trở lại!</h1>
 <p class="subtitle">Đăng nhập vào tài khoản MiniShop của bạn</p>
@@ -28,6 +30,7 @@
 <p class="divider"><span>Mới đến MiniShop?</span></p>
 <a href="user?action=showRegister" class="btn btn-outline">Đăng ký</a>
 
-<p class="demo-hint">Tài khoản mẫu: <b>demo@minishop.vn</b> / <b>123456</b></p>
 
+</main>
+</div>
 <c:import url="/includes/footer.jsp" />

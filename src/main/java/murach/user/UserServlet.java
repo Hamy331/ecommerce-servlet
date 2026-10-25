@@ -23,13 +23,11 @@ public class UserServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String url = "/login.jsp";
 
-        // get current action
         String action = request.getParameter("action");
         if (action == null) {
-            action = "showLogin";  // default action
+            action = "showLogin"; 
         }
 
-        // perform action and set URL to appropriate page
         if (action.equals("showLogin")) {
             url = "/login.jsp";
         } else if (action.equals("showRegister")) {
@@ -62,11 +60,9 @@ public class UserServlet extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        // store data in User object (giữ lại để form điền sẵn khi có lỗi)
         User user = new User(firstName, lastName, email);
         request.setAttribute("user", user);
 
-        // validate the parameters
         String message;
         String url;
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()
@@ -123,9 +119,9 @@ public class UserServlet extends HttpServlet {
 
         if (ok) {
             HttpSession session = request.getSession();
-            request.changeSessionId();  // chống session fixation
+            request.changeSessionId();  
             session.setAttribute("user", user);
-            return "/welcome.jsp";
+            return "/home"; 
         } else {
             request.setAttribute("email", email);
             request.setAttribute("message", "Email hoặc mật khẩu không đúng.");

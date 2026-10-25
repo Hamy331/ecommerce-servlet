@@ -8,4 +8,3 @@
     <link rel="stylesheet" href="styles/main.css" type="text/css"/>
 </head>
 <body>
-<main class="card">
