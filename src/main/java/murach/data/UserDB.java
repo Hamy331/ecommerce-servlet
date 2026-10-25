@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import murach.business.User;
+import murach.util.PasswordUtil;
 
 /**
  * Lưu user trong bộ nhớ (mất khi restart Tomcat).
@@ -14,6 +15,20 @@ import murach.business.User;
 public class UserDB {
 
     private static final List<User> users = new ArrayList<>();
+
+    // mock data: tài khoản mẫu để thử đăng nhập (demo@minishop.vn / 123456)
+    static {
+        try {
+            User demo = new User("An", "Nguyễn", "demo@minishop.vn");
+            String salt = PasswordUtil.getSalt();
+            demo.setSalt(salt);
+            demo.setPasswordHash(
+                    PasswordUtil.hashAndSaltPassword("123456", salt));
+            users.add(demo);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     public static synchronized int insert(User user) {
         if (emailExists(user.getEmail())) {

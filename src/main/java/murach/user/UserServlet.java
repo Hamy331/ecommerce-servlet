@@ -23,13 +23,11 @@ public class UserServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String url = "/login.jsp";
 
-        // get current action
         String action = request.getParameter("action");
         if (action == null) {
-            action = "showLogin";  // default action
+            action = "showLogin"; 
         }
 
-        // perform action and set URL to appropriate page
         if (action.equals("showLogin")) {
             url = "/login.jsp";
         } else if (action.equals("showRegister")) {
@@ -44,6 +42,7 @@ public class UserServlet extends HttpServlet {
                 session.invalidate();
             }
             request.setAttribute("message", "Bạn đã đăng xuất.");
+            request.setAttribute("messageType", "success");
             url = "/login.jsp";
         }
 
@@ -54,6 +53,7 @@ public class UserServlet extends HttpServlet {
 
     private String register(HttpServletRequest request)
             throws ServletException {
+        // get parameters from the request
         String firstName = trim(request.getParameter("firstName"));
         String lastName = trim(request.getParameter("lastName"));
         String email = trim(request.getParameter("email"));
@@ -89,6 +89,8 @@ public class UserServlet extends HttpServlet {
             }
             UserDB.insert(user);
             message = "Đăng ký thành công! Hãy đăng nhập.";
+            request.setAttribute("messageType", "success");
+            request.setAttribute("email", email);
             url = "/login.jsp";
         }
         request.setAttribute("message", message);
@@ -119,7 +121,7 @@ public class UserServlet extends HttpServlet {
             HttpSession session = request.getSession();
             request.changeSessionId();  
             session.setAttribute("user", user);
-            return "/welcome.jsp";
+            return "/home"; 
         } else {
             request.setAttribute("email", email);
             request.setAttribute("message", "Email hoặc mật khẩu không đúng.");

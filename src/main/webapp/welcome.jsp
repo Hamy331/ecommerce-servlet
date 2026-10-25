@@ -6,11 +6,12 @@
 <c:import url="/includes/header.jsp" />
 
 <h1>Xin chào, <c:out value="${sessionScope.user.lastName} ${sessionScope.user.firstName}" />!</h1>
-<p>Bạn đã đăng nhập bằng email <c:out value="${sessionScope.user.email}" />.</p>
+<p class="subtitle">Bạn đã đăng nhập bằng <c:out value="${sessionScope.user.email}" /></p>
+<p class="subtitle">Trang chủ sản phẩm sẽ làm ở bước tiếp theo.</p>
 
 <form action="user" method="post">
     <input type="hidden" name="action" value="logout">
-    <input type="submit" value="Đăng xuất">
+    <input type="submit" value="Đăng xuất" class="btn btn-outline">
 </form>
 
 <c:import url="/includes/footer.jsp" />
