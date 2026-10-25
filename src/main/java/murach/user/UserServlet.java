@@ -44,6 +44,7 @@ public class UserServlet extends HttpServlet {
                 session.invalidate();
             }
             request.setAttribute("message", "Bạn đã đăng xuất.");
+            request.setAttribute("messageType", "success");
             url = "/login.jsp";
         }
 
@@ -54,15 +55,18 @@ public class UserServlet extends HttpServlet {
 
     private String register(HttpServletRequest request)
             throws ServletException {
+        // get parameters from the request
         String firstName = trim(request.getParameter("firstName"));
         String lastName = trim(request.getParameter("lastName"));
         String email = trim(request.getParameter("email"));
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
+        // store data in User object (giữ lại để form điền sẵn khi có lỗi)
         User user = new User(firstName, lastName, email);
         request.setAttribute("user", user);
 
+        // validate the parameters
         String message;
         String url;
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()
@@ -89,6 +93,8 @@ public class UserServlet extends HttpServlet {
             }
             UserDB.insert(user);
             message = "Đăng ký thành công! Hãy đăng nhập.";
+            request.setAttribute("messageType", "success");
+            request.setAttribute("email", email);
             url = "/login.jsp";
         }
         request.setAttribute("message", message);
@@ -117,7 +123,7 @@ public class UserServlet extends HttpServlet {
 
         if (ok) {
             HttpSession session = request.getSession();
-            request.changeSessionId();  
+            request.changeSessionId();  // chống session fixation
             session.setAttribute("user", user);
             return "/welcome.jsp";
         } else {
