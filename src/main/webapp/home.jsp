@@ -31,7 +31,7 @@
             <div class="product">
                 <div class="thumb">
                     <c:if test="${product.hasImage}">
-                        <img src="image?code=${product.code}"
+                        <img src="image?code=${product.code}&amp;v=${product.imageVersion}"
                              alt="<c:out value='${product.description}'/>">
                     </c:if>
                 </div>

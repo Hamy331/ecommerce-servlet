@@ -83,6 +83,7 @@ public class ProductAdminServlet extends HttpServlet {
         if (mode.equals("edit")) {
             Product old = ProductDB.selectProduct(code);
             product.setHasImage(old != null && old.isHasImage());
+            product.setImageVersion(old == null ? 0 : old.getImageVersion());
         }
         request.setAttribute("product", product);
         request.setAttribute("mode", mode);

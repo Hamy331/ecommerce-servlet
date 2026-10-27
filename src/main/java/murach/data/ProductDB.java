@@ -15,7 +15,8 @@ public class ProductDB {
 
     // không lấy cột Image, chỉ biết sản phẩm có ảnh hay không
     private static final String COLUMNS = "ProductCode, Description, Price, "
-            + "Details, Image IS NOT NULL AS HasImage";
+            + "Details, Image IS NOT NULL AS HasImage, "
+            + "COALESCE(CRC32(Image), 0) AS ImageVersion";
 
     public static List<Product> selectProducts() {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -206,6 +207,7 @@ public class ProductDB {
         p.setPrice(rs.getDouble("Price"));
         p.setDetails(rs.getString("Details") == null ? "" : rs.getString("Details"));
         p.setHasImage(rs.getBoolean("HasImage"));
+        p.setImageVersion(rs.getLong("ImageVersion"));
         return p;
     }
 }

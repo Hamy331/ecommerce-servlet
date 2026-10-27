@@ -46,7 +46,7 @@
                                 <div class="cart-product">
                                     <div class="cart-thumb">
                                         <c:if test="${item.product.hasImage}">
-                                            <img src="image?code=${item.product.code}" alt=""
+                                            <img src="image?code=${item.product.code}&amp;v=${item.product.imageVersion}" alt=""
                                                  onerror="this.remove()">
                                         </c:if>
                                     </div>

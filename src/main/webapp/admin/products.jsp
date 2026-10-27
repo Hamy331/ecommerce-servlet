@@ -25,7 +25,7 @@
                         <div class="cart-product">
                             <div class="cart-thumb">
                                 <c:if test="${product.hasImage}">
-                                    <img src="${pageContext.request.contextPath}/image?code=${product.code}" alt="">
+                                    <img src="${pageContext.request.contextPath}/image?code=${product.code}&amp;v=${product.imageVersion}" alt="">
                                 </c:if>
                             </div>
                             <c:out value="${product.description}" />

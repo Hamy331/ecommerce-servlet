@@ -11,6 +11,7 @@ public class Product implements Serializable {
     private double price;
     private String details;
     private boolean hasImage;
+    private long imageVersion;
 
     public Product() {
         code = "";
@@ -58,6 +59,15 @@ public class Product implements Serializable {
 
     public boolean isHasImage() {
         return hasImage;
+    }
+
+    // đổi mỗi khi ảnh đổi, gắn vào URL để trình duyệt không dùng ảnh cũ
+    public void setImageVersion(long imageVersion) {
+        this.imageVersion = imageVersion;
+    }
+
+    public long getImageVersion() {
+        return imageVersion;
     }
 
     public String getPriceCurrencyFormat() {

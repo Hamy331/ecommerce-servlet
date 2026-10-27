@@ -42,7 +42,7 @@
 
             <label for="image">Ảnh sản phẩm</label>
             <c:if test="${product.hasImage}">
-                <img src="${pageContext.request.contextPath}/image?code=${product.code}" alt="" class="form-image">
+                <img src="${pageContext.request.contextPath}/image?code=${product.code}&amp;v=${product.imageVersion}" alt="" class="form-image">
             </c:if>
             <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/webp">
             <p class="hint">JPG, PNG hoặc WEBP, tối đa 5 MB.
