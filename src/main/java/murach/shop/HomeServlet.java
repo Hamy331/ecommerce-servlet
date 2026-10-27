@@ -32,7 +32,7 @@ public class HomeServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String url = "/home.jsp";
         if (session.getAttribute("user") == null) {
-            url = "/login.jsp";
+            url = "/user?action=showLogin";  // thử tự đăng nhập bằng cookie
         } else if (action.equals("detail")) {
             String productCode = request.getParameter("productCode");
             Product product = ProductIO.getProduct(productCode, path);

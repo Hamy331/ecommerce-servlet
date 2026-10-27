@@ -1,7 +1,9 @@
 package murach.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import murach.business.User;
 import murach.util.PasswordUtil;
@@ -15,6 +17,9 @@ import murach.util.PasswordUtil;
 public class UserDB {
 
     private static final List<User> users = new ArrayList<>();
+
+    // token "ghi nhớ đăng nhập" -> email
+    private static final Map<String, String> rememberTokens = new HashMap<>();
 
     // mock data: tài khoản mẫu để thử đăng nhập (demo@minishop.vn / 123456)
     static {
@@ -49,5 +54,18 @@ public class UserDB {
             }
         }
         return null;
+    }
+
+    public static synchronized void insertRememberToken(String token, String email) {
+        rememberTokens.put(token, email);
+    }
+
+    public static synchronized User selectUserByRememberToken(String token) {
+        String email = rememberTokens.get(token);
+        return email == null ? null : selectUser(email);
+    }
+
+    public static synchronized void deleteRememberToken(String token) {
+        rememberTokens.remove(token);
     }
 }

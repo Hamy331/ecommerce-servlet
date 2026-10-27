@@ -22,6 +22,10 @@
         <button type="button" class="toggle-password" aria-label="Hiện mật khẩu"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></svg></button>
     </div>
 
+    <label class="remember">
+        <input type="checkbox" name="remember"> Ghi nhớ đăng nhập
+    </label>
+
     <p class="forgot">Quên mật khẩu? <a href="#">Đặt lại</a></p>
 
     <input type="submit" value="Đăng nhập" class="btn btn-primary">

@@ -548,3 +548,12 @@ label.radio:has(input:checked) {
 .thanks .subtitle {
     margin-bottom: 16px;
 }
+
+label.remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 0;
+    font-weight: normal;
+    cursor: pointer;
+}
