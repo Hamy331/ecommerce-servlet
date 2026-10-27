@@ -43,7 +43,7 @@
         <url-pattern>/admin/orders</url-pattern>
     </servlet-mapping>
 
-    <!-- Ch 20: filter chặn khu admin -->
+    <!-- filter chặn khu admin -->
     <filter>
         <filter-name>AdminFilter</filter-name>
         <filter-class>murach.filters.AdminFilter</filter-class>

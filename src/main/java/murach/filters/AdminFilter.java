@@ -15,9 +15,6 @@ import javax.servlet.http.HttpSession;
 
 import murach.business.User;
 
-/**
- * Chặn mọi request vào /admin/*: chỉ tài khoản có Role = 'admin' mới đi tiếp.
- */
 public class AdminFilter implements Filter {
 
     private FilterConfig filterConfig = null;

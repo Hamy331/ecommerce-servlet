@@ -13,10 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import murach.business.User;
-
-/**
- * Admin không được vào trang mua hàng (/home, /cart): chuyển về trang quản lý.
- */
+    
 public class CustomerFilter implements Filter {
 
     private FilterConfig filterConfig = null;

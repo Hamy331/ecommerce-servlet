@@ -42,6 +42,15 @@ public class HomeServlet extends HttpServlet {
                 request.setAttribute("products", ProductDB.selectProducts());
                 url = "/home.jsp";
             }
+        } else if (action.equals("search")) {
+            String keyword = request.getParameter("keyword");
+            keyword = (keyword == null) ? "" : keyword.trim();
+            List<Product> products = keyword.isEmpty()
+                    ? ProductDB.selectProducts()
+                    : ProductDB.selectProducts(keyword);
+            request.setAttribute("keyword", keyword);
+            request.setAttribute("products", products);
+            url = "/home.jsp";
         } else {
             // "home", hoặc action=login khi UserServlet forward sang
             List<Product> products = ProductDB.selectProducts();

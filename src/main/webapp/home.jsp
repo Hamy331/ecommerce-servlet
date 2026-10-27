@@ -8,6 +8,21 @@
     <h1 class="page-title">Sản phẩm</h1>
     <p class="subtitle left">Chọn sản phẩm bạn thích để xem chi tiết.</p>
 
+    <form action="home" method="get" class="search-bar">
+        <input type="hidden" name="action" value="search">
+        <input type="text" name="keyword" value="<c:out value='${keyword}'/>"
+               placeholder="Tìm theo tên hoặc mã sản phẩm...">
+        <input type="submit" value="Tìm kiếm" class="btn-search">
+    </form>
+
+    <c:if test="${not empty keyword}">
+        <p class="search-result">
+            Tìm thấy ${products.size()} sản phẩm cho
+            "<b><c:out value="${keyword}" /></b>".
+            <a href="home">Xem tất cả</a>
+        </p>
+    </c:if>
+
     <div class="product-grid">
         <c:forEach var="product" items="${products}">
             <div class="product">
@@ -26,6 +41,9 @@
             </div>
         </c:forEach>
     </div>
+    <c:if test="${empty products}">
+        <p class="empty-search">Không có sản phẩm nào phù hợp.</p>
+    </c:if>
 </main>
 
 <c:import url="/includes/footer.jsp" />

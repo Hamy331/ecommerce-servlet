@@ -36,6 +36,38 @@ public class ProductDB {
         }
     }
 
+    public static List<Product> selectProducts(String keyword) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = "SELECT * FROM product "
+                + "WHERE Description LIKE ? OR ProductCode LIKE ? "
+                + "ORDER BY ProductCode";
+        List<Product> products = new ArrayList<>();
+        try {
+            // thoát ký tự % và _ để người dùng gõ vào không thành ký tự đại diện
+            String pattern = "%" + keyword.replace("\\", "\\\\")
+                    .replace("%", "\\%").replace("_", "\\_") + "%";
+            ps = connection.prepareStatement(query);
+            ps.setString(1, pattern);
+            ps.setString(2, pattern);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                products.add(toProduct(rs));
+            }
+            return products;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return products;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+
     public static Product selectProduct(String code) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
