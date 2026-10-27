@@ -6,11 +6,6 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Random;
 
-/**
- * Theo chapter 17: hash SHA-256 + salt.
- * Khác slide một chút: salt được lưu lại trong User để lúc đăng nhập
- * có thể hash lại mật khẩu và so sánh.
- */
 public class PasswordUtil {
 
     public static String hashPassword(String password)
