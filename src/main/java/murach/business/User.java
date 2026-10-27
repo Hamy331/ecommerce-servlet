@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
+    private long userId;
     private String firstName;
     private String lastName;
     private String email;
@@ -24,6 +25,14 @@ public class User implements Serializable {
         this.email = email;
         this.passwordHash = "";
         this.salt = "";
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {

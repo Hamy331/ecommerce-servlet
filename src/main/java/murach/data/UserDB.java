@@ -1,71 +1,148 @@
 package murach.data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import murach.business.User;
-import murach.util.PasswordUtil;
 
-/**
- * Lưu user trong bộ nhớ (mất khi restart Tomcat).
- * Các method có cùng tên với UserDB ở chapter 12 (insert, emailExists,
- * selectUser) nên sau này chỉ cần thay phần thân bằng JDBC + ConnectionPool,
- * servlet không phải sửa gì.
- */
 public class UserDB {
 
-    private static final List<User> users = new ArrayList<>();
+    public static int insert(User user) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
 
-    // token "ghi nhớ đăng nhập" -> email
-    private static final Map<String, String> rememberTokens = new HashMap<>();
-
-    // mock data: tài khoản mẫu để thử đăng nhập (demo@minishop.vn / 123456)
-    static {
+        String query
+                = "INSERT INTO user (Email, FirstName, LastName, PasswordHash, Salt) "
+                + "VALUES (?, ?, ?, ?, ?)";
         try {
-            User demo = new User("An", "Nguyễn", "demo@minishop.vn");
-            String salt = PasswordUtil.getSalt();
-            demo.setSalt(salt);
-            demo.setPasswordHash(
-                    PasswordUtil.hashAndSaltPassword("123456", salt));
-            users.add(demo);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
-    public static synchronized int insert(User user) {
-        if (emailExists(user.getEmail())) {
-            return 0;
-        }
-        users.add(user);
-        return 1;
-    }
-
-    public static synchronized boolean emailExists(String email) {
-        return selectUser(email) != null;
-    }
-
-    public static synchronized User selectUser(String email) {
-        for (User u : users) {
-            if (u.getEmail().equalsIgnoreCase(email)) {
-                return u;
+            ps = connection.prepareStatement(query,
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getFirstName());
+            ps.setString(3, user.getLastName());
+            ps.setString(4, user.getPasswordHash());
+            ps.setString(5, user.getSalt());
+            int count = ps.executeUpdate();
+            rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                user.setUserId(rs.getLong(1));
             }
+            return count;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return 0;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
         }
-        return null;
     }
 
-    public static synchronized void insertRememberToken(String token, String email) {
-        rememberTokens.put(token, email);
+    public static boolean emailExists(String email) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = "SELECT Email FROM user "
+                + "WHERE Email = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, email);
+            rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
     }
 
-    public static synchronized User selectUserByRememberToken(String token) {
-        String email = rememberTokens.get(token);
-        return email == null ? null : selectUser(email);
+    public static User selectUser(String email) {
+        return selectOne("SELECT * FROM user WHERE Email = ?", email);
     }
 
-    public static synchronized void deleteRememberToken(String token) {
-        rememberTokens.remove(token);
+    public static void insertRememberToken(String token, String email) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+
+        String query = "INSERT INTO remembertoken (Token, UserID) "
+                + "SELECT ?, UserID FROM user WHERE Email = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, token);
+            ps.setString(2, email);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+
+    public static User selectUserByRememberToken(String token) {
+        return selectOne("SELECT u.* FROM user u "
+                + "JOIN remembertoken t ON t.UserID = u.UserID "
+                + "WHERE t.Token = ?", token);
+    }
+
+    public static void deleteRememberToken(String token) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+
+        String query = "DELETE FROM remembertoken WHERE Token = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, token);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+
+    // chạy câu SELECT có một tham số, trả về một User (hoặc null)
+    private static User selectOne(String query, String value) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, value);
+            rs = ps.executeQuery();
+            User user = null;
+            if (rs.next()) {
+                user = new User();
+                user.setUserId(rs.getLong("UserID"));
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                user.setEmail(rs.getString("Email"));
+                user.setPasswordHash(rs.getString("PasswordHash"));
+                user.setSalt(rs.getString("Salt"));
+            }
+            return user;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
     }
 }

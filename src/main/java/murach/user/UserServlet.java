@@ -100,11 +100,15 @@ public class UserServlet extends HttpServlet {
             } catch (NoSuchAlgorithmException e) {
                 throw new ServletException(e);
             }
-            UserDB.insert(user);
-            message = "Đăng ký thành công! Hãy đăng nhập.";
-            request.setAttribute("messageType", "success");
-            request.setAttribute("email", email);
-            url = "/login.jsp";
+            if (UserDB.insert(user) > 0) {
+                message = "Đăng ký thành công! Hãy đăng nhập.";
+                request.setAttribute("messageType", "success");
+                request.setAttribute("email", email);
+                url = "/login.jsp";
+            } else {
+                message = "Không lưu được tài khoản. Vui lòng thử lại sau.";
+                url = "/register.jsp";
+            }
         }
         request.setAttribute("message", message);
         return url;

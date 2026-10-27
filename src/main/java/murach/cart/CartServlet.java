@@ -127,7 +127,12 @@ public class CartServlet extends HttpServlet {
         }
 
         invoice.setLineItems(cart.getItems());
-        InvoiceDB.insert(invoice);
+        if (InvoiceDB.insert(invoice) == 0) {
+            request.setAttribute("invoice", invoice);
+            request.setAttribute("message",
+                    "Không lưu được đơn hàng. Vui lòng thử lại sau.");
+            return "/checkout.jsp";
+        }
 
         // đặt hàng xong thì làm trống giỏ
         session.removeAttribute("cart");

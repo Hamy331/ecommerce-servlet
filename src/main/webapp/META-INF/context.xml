@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/ecommerce">
+
+    <Resource name="jdbc/minishop" auth="Container"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        url="jdbc:mysql://localhost:3306/minishop?allowPublicKeyRetrieval=true"
+        username="minishop_user" password="sesame"
+        maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+        logAbandoned="true" removeAbandonedOnBorrow="true"
+        removeAbandonedTimeout="60" type="javax.sql.DataSource" />
+
+</Context>
