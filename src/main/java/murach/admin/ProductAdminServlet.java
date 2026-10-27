@@ -1,11 +1,13 @@
 package murach.admin;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import murach.business.Product;
 import murach.data.ProductDB;
@@ -57,15 +59,31 @@ public class ProductAdminServlet extends HttpServlet {
                 .forward(request, response);
     }
 
-    private String save(HttpServletRequest request) {
+    private static final long MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+
+    private static boolean isImageType(String type) {
+        return "image/jpeg".equals(type) || "image/png".equals(type)
+                || "image/webp".equals(type);
+    }
+
+    private String save(HttpServletRequest request)
+            throws IOException, ServletException {
         String mode = "edit".equals(request.getParameter("mode")) ? "edit" : "add";
         String code = trim(request.getParameter("productCode")).toLowerCase();
         String description = trim(request.getParameter("description"));
         String priceString = trim(request.getParameter("price"));
+        String details = trim(request.getParameter("details"));
+        Part image = request.getPart("image");
+        boolean hasNewImage = image != null && image.getSize() > 0;
 
         Product product = new Product();
         product.setCode(code);
         product.setDescription(description);
+        product.setDetails(details);
+        if (mode.equals("edit")) {
+            Product old = ProductDB.selectProduct(code);
+            product.setHasImage(old != null && old.isHasImage());
+        }
         request.setAttribute("product", product);
         request.setAttribute("mode", mode);
         request.setAttribute("priceString", priceString);
@@ -87,6 +105,10 @@ public class ProductAdminServlet extends HttpServlet {
             message = "Giá phải là số lớn hơn 0.";
         } else if (mode.equals("add") && ProductDB.selectProduct(code) != null) {
             message = "Mã sản phẩm " + code + " đã tồn tại.";
+        } else if (hasNewImage && !isImageType(image.getContentType())) {
+            message = "Ảnh phải là file JPG, PNG hoặc WEBP.";
+        } else if (hasNewImage && image.getSize() > MAX_IMAGE_SIZE) {
+            message = "Ảnh tối đa 5 MB.";
         }
         if (message != null) {
             setMessage(request, message, false);
@@ -98,6 +120,12 @@ public class ProductAdminServlet extends HttpServlet {
         if (count == 0) {
             setMessage(request, "Không lưu được sản phẩm. Vui lòng thử lại.", false);
             return "/admin/product_form.jsp";
+        }
+        if (hasNewImage) {
+            try (InputStream in = image.getInputStream()) {
+                ProductDB.updateImage(code, in, image.getSize(),
+                        image.getContentType());
+            }
         }
         setMessage(request, "Đã lưu sản phẩm " + code + ".", true);
         return "/admin/products.jsp";

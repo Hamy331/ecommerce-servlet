@@ -9,11 +9,15 @@ public class Product implements Serializable {
     private String code;
     private String description;
     private double price;
+    private String details;
+    private boolean hasImage;
 
     public Product() {
         code = "";
         description = "";
         price = 0;
+        details = "";
+        hasImage = false;
     }
 
     public void setCode(String code) {
@@ -38,6 +42,22 @@ public class Product implements Serializable {
 
     public double getPrice() {
         return price;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setHasImage(boolean hasImage) {
+        this.hasImage = hasImage;
+    }
+
+    public boolean isHasImage() {
+        return hasImage;
     }
 
     public String getPriceCurrencyFormat() {

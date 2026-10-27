@@ -29,12 +29,11 @@
     <div class="product-grid">
         <c:forEach var="product" items="${products}">
             <div class="product">
-                <%-- ảnh đặt tên theo mã sản phẩm: images/p01.png ...
-                     không có file thì ẩn ảnh, khung để trống --%>
                 <div class="thumb">
-                    <img src="images/${product.code}.png"
-                         alt="<c:out value='${product.description}'/>"
-                         onerror="this.remove()">
+                    <c:if test="${product.hasImage}">
+                        <img src="image?code=${product.code}"
+                             alt="<c:out value='${product.description}'/>">
+                    </c:if>
                 </div>
                 <div class="product-body">
                     <p class="product-name"><c:out value="${product.description}" /></p>

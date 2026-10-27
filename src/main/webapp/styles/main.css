@@ -750,3 +750,44 @@ input:disabled {
     margin: 0 auto 12px;
     color: #ff8a5c;
 }
+
+/* mô tả và ảnh sản phẩm */
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dcdfe4;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+}
+textarea:focus {
+    outline: none;
+    border-color: #ff8a5c;
+    box-shadow: 0 0 0 3px rgba(255, 138, 92, 0.2);
+}
+input[type="file"] {
+    font-family: inherit;
+    font-size: 13px;
+}
+.form-image {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin-bottom: 8px;
+    border: 1px solid #ececec;
+    border-radius: 8px;
+    object-fit: contain;
+    background: #fff;
+}
+.detail-desc h2 {
+    margin: 18px 0 6px;
+    font-size: 15px;
+}
+.detail-desc p {
+    margin: 0;
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-line;
+}

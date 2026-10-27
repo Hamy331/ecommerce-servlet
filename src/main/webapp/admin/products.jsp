@@ -24,8 +24,9 @@
                     <td>
                         <div class="cart-product">
                             <div class="cart-thumb">
-                                <img src="${pageContext.request.contextPath}/images/${product.code}.png"
-                                     alt="" onerror="this.remove()">
+                                <c:if test="${product.hasImage}">
+                                    <img src="${pageContext.request.contextPath}/image?code=${product.code}" alt="">
+                                </c:if>
                             </div>
                             <c:out value="${product.description}" />
                         </div>

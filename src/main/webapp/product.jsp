@@ -13,15 +13,23 @@
 
     <div class="detail">
         <div class="detail-image">
-            <img src="images/${product.code}.png"
-                 alt="<c:out value='${product.description}'/>"
-                 onerror="this.remove()">
+            <c:if test="${product.hasImage}">
+                <img src="image?code=${product.code}"
+                     alt="<c:out value='${product.description}'/>">
+            </c:if>
         </div>
 
         <div class="detail-info">
             <h1 class="page-title"><c:out value="${product.description}" /></h1>
             <p class="detail-code">Mã sản phẩm: <c:out value="${product.code}" /></p>
             <p class="detail-price">${product.priceCurrencyFormat}</p>
+
+            <c:if test="${not empty product.details}">
+                <div class="detail-desc">
+                    <h2>Mô tả sản phẩm</h2>
+                    <p><c:out value="${product.details}" /></p>
+                </div>
+            </c:if>
 
             <form action="cart" method="post">
                 <input type="hidden" name="productCode"

@@ -11,7 +11,7 @@
         <h1 class="page-title">${mode == 'edit' ? 'Sửa sản phẩm' : 'Thêm sản phẩm'}</h1>
         <c:import url="/includes/message.jsp" />
 
-        <form action="products" method="post">
+        <form action="products" method="post" enctype="multipart/form-data">
             <input type="hidden" name="action" value="save">
             <input type="hidden" name="mode" value="${mode}">
 
@@ -36,8 +36,17 @@
                    value="<c:out value='${priceString}'/>"
                    placeholder="ví dụ: 199000" required>
 
-            <p class="hint">Ảnh: đặt file <b>images/<c:out value="${empty product.code ? 'mã' : product.code}"/>.png</b>
-                trong thư mục webapp, không có ảnh thì khung để trống.</p>
+            <label for="details">Mô tả sản phẩm</label>
+            <textarea id="details" name="details" rows="7"
+                      placeholder="Thông số, chất liệu, bảo hành..."><c:out value="${product.details}" /></textarea>
+
+            <label for="image">Ảnh sản phẩm</label>
+            <c:if test="${product.hasImage}">
+                <img src="${pageContext.request.contextPath}/image?code=${product.code}" alt="" class="form-image">
+            </c:if>
+            <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/webp">
+            <p class="hint">JPG, PNG hoặc WEBP, tối đa 5 MB.
+                <c:if test="${product.hasImage}">Để trống nếu muốn giữ ảnh hiện tại.</c:if></p>
 
             <input type="submit" value="Lưu" class="btn btn-primary">
             <a href="products" class="btn btn-outline">Huỷ</a>

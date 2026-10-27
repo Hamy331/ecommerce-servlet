@@ -45,8 +45,10 @@
                             <td>
                                 <div class="cart-product">
                                     <div class="cart-thumb">
-                                        <img src="images/${item.product.code}.png" alt=""
-                                             onerror="this.remove()">
+                                        <c:if test="${item.product.hasImage}">
+                                            <img src="image?code=${item.product.code}" alt=""
+                                                 onerror="this.remove()">
+                                        </c:if>
                                     </div>
                                     <c:out value='${item.product.description}'/>
                                 </div>
