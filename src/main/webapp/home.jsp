@@ -2,16 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/includes/header.jsp" />
 
-<header class="topbar">
-    <a href="home" class="brand">MiniShop</a>
-    <div class="topbar-right">
-        <span>Xin chào, <b><c:out value="${sessionScope.user.lastName} ${sessionScope.user.firstName}" /></b></span>
-        <form action="user" method="post">
-            <input type="hidden" name="action" value="logout">
-            <input type="submit" value="Đăng xuất" class="btn-small">
-        </form>
-    </div>
-</header>
+<c:import url="/includes/topbar.jsp" />
 
 <main class="shop">
     <h1 class="page-title">Sản phẩm</h1>
