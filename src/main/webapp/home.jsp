@@ -21,7 +21,7 @@
                 <div class="product-body">
                     <p class="product-name"><c:out value="${product.description}" /></p>
                     <p class="price">${product.priceCurrencyFormat}</p>
-                    <a href="#" class="btn btn-primary">Xem chi tiết</a>
+                    <a href="home?action=detail&amp;productCode=${product.code}" class="btn btn-primary">Xem chi tiết</a>
                 </div>
             </div>
         </c:forEach>

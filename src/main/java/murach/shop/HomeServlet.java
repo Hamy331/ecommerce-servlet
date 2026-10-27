@@ -21,12 +21,30 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         ServletContext sc = getServletContext();
+        String path = sc.getRealPath("/WEB-INF/products.txt");
+
+        // get current action
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "home";  // default action
+        }
+
         HttpSession session = request.getSession();
         String url = "/home.jsp";
         if (session.getAttribute("user") == null) {
             url = "/login.jsp";
+        } else if (action.equals("detail")) {
+            String productCode = request.getParameter("productCode");
+            Product product = ProductIO.getProduct(productCode, path);
+            if (product != null) {
+                request.setAttribute("product", product);
+                url = "/product.jsp";
+            } else {
+                request.setAttribute("products", ProductIO.getProducts(path));
+                url = "/home.jsp";
+            }
         } else {
-            String path = sc.getRealPath("/WEB-INF/products.txt");
+            // "home", hoặc action=login khi UserServlet forward sang
             List<Product> products = ProductIO.getProducts(path);
             request.setAttribute("products", products);
             url = "/home.jsp";
