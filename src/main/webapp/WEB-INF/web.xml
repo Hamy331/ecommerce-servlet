@@ -3,6 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
     <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>murach.shop.OrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/orders</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>murach.user.UserServlet</servlet-class>
     </servlet>
@@ -60,6 +68,7 @@
         <filter-name>CustomerFilter</filter-name>
         <url-pattern>/home</url-pattern>
         <url-pattern>/cart</url-pattern>
+        <url-pattern>/orders</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>

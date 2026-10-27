@@ -31,6 +31,7 @@
         </div>
 
         <a href="home" class="btn btn-primary">Tiếp tục mua sắm</a>
+        <a href="orders" class="btn btn-outline">Xem đơn hàng của tôi</a>
     </div>
 </main>
 

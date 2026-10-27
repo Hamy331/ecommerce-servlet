@@ -3,6 +3,7 @@
 <header class="topbar">
     <a href="home" class="brand">MiniShop</a>
     <div class="topbar-right">
+        <a href="orders" class="cart-link">Đơn hàng</a>
         <a href="cart" class="cart-link">
             Giỏ hàng
             <c:if test="${sessionScope.cart.count > 0}">

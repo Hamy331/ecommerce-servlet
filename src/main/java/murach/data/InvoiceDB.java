@@ -113,6 +113,40 @@ public class InvoiceDB {
         }
     }
 
+    // khách hàng: đơn của một tài khoản, mới nhất trước
+    public static List<Invoice> selectInvoices(long userId) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = "SELECT i.*, u.Email FROM invoice i "
+                + "JOIN user u ON u.UserID = i.UserID "
+                + "WHERE i.UserID = ? "
+                + "ORDER BY i.InvoiceID DESC";
+        List<Invoice> invoices = new ArrayList<>();
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setLong(1, userId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                invoices.add(toInvoice(rs));
+            }
+            for (Invoice invoice : invoices) {
+                invoice.setLineItems(
+                        selectLineItems(connection, invoice.getInvoiceNumber()));
+            }
+            return invoices;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return invoices;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+
     public static Invoice selectInvoice(long invoiceId) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
