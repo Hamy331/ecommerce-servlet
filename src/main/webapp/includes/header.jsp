@@ -8,3 +8,4 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css" type="text/css"/>
 </head>
 <body>
+<%@ include file="/includes/icons.jsp" %>

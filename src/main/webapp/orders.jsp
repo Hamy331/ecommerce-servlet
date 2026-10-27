@@ -10,8 +10,9 @@
     <c:choose>
         <c:when test="${empty invoices}">
             <div class="empty-search">
+                <svg class="icon icon-lg"><use href="#i-receipt"/></svg>
                 Bạn chưa có đơn hàng nào.
-                <p><a href="home" class="btn btn-primary btn-auto">Mua sắm ngay</a></p>
+                <p><a href="home" class="btn-add">Mua sắm ngay</a></p>
             </div>
         </c:when>
         <c:otherwise>

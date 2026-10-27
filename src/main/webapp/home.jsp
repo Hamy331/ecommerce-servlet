@@ -10,8 +10,11 @@
 
     <form action="home" method="get" class="search-bar">
         <input type="hidden" name="action" value="search">
-        <input type="text" name="keyword" value="<c:out value='${keyword}'/>"
+        <span class="search-input">
+            <svg class="icon"><use href="#i-search"/></svg>
+            <input type="text" name="keyword" value="<c:out value='${keyword}'/>"
                placeholder="Tìm theo tên hoặc mã sản phẩm...">
+        </span>
         <input type="submit" value="Tìm kiếm" class="btn-search">
     </form>
 
@@ -42,7 +45,7 @@
         </c:forEach>
     </div>
     <c:if test="${empty products}">
-        <p class="empty-search">Không có sản phẩm nào phù hợp.</p>
+        <p class="empty-search"><svg class="icon icon-lg"><use href="#i-search"/></svg>Không có sản phẩm nào phù hợp.</p>
     </c:if>
 </main>
 

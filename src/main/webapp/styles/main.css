@@ -183,6 +183,9 @@ a.btn-outline:hover, .btn-outline:hover {
     border-bottom: 1px solid #ececec;
 }
 .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: 20px;
     font-weight: 700;
     color: #e8590c;
@@ -686,8 +689,19 @@ input:disabled {
     max-width: 520px;
     margin-top: 16px;
 }
-.search-bar input[type="text"] {
+.search-input {
+    position: relative;
     flex: 1;
+}
+.search-input .icon {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #9aa0a6;
+}
+.search-bar input[type="text"] {
+    padding-left: 36px;
 }
 .btn-search {
     padding: 0 18px;
@@ -716,4 +730,23 @@ input:disabled {
     background: #fff;
     color: #6b7280;
     text-align: center;
+}
+
+/* icon */
+.icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+.brand .icon {
+    width: 22px;
+    height: 22px;
+}
+.icon-lg {
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 12px;
+    color: #ff8a5c;
 }

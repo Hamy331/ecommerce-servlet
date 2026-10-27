@@ -1,11 +1,11 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header class="topbar">
-    <a href="home" class="brand">MiniShop</a>
+    <a href="home" class="brand"><svg class="icon"><use href="#i-bag"/></svg>MiniShop</a>
     <div class="topbar-right">
-        <a href="orders" class="cart-link">Đơn hàng</a>
+        <a href="orders" class="cart-link"><svg class="icon"><use href="#i-receipt"/></svg>Đơn hàng</a>
         <a href="cart" class="cart-link">
-            Giỏ hàng
+            <svg class="icon"><use href="#i-cart"/></svg>Giỏ hàng
             <c:if test="${sessionScope.cart.count > 0}">
                 <span class="badge">${sessionScope.cart.count}</span>
             </c:if>

@@ -12,6 +12,7 @@
     <c:choose>
         <c:when test="${empty cart.items}">
             <div class="cart-empty">
+                <svg class="icon icon-lg"><use href="#i-cart"/></svg>
                 <p class="cart-empty-title">Giỏ hàng đang trống</p>
                 <p class="subtitle">Hãy chọn vài sản phẩm ở trang chủ nhé.</p>
                 <form action="cart" method="post">
