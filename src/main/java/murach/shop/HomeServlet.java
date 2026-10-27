@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import murach.business.Product;
-import murach.data.ProductIO;
+import murach.data.ProductDB;
 
 public class HomeServlet extends HttpServlet {
 
@@ -21,7 +21,6 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         ServletContext sc = getServletContext();
-        String path = sc.getRealPath("/WEB-INF/products.txt");
 
         // get current action
         String action = request.getParameter("action");
@@ -35,17 +34,17 @@ public class HomeServlet extends HttpServlet {
             url = "/user?action=showLogin";  // thử tự đăng nhập bằng cookie
         } else if (action.equals("detail")) {
             String productCode = request.getParameter("productCode");
-            Product product = ProductIO.getProduct(productCode, path);
+            Product product = ProductDB.selectProduct(productCode);
             if (product != null) {
                 request.setAttribute("product", product);
                 url = "/product.jsp";
             } else {
-                request.setAttribute("products", ProductIO.getProducts(path));
+                request.setAttribute("products", ProductDB.selectProducts());
                 url = "/home.jsp";
             }
         } else {
             // "home", hoặc action=login khi UserServlet forward sang
-            List<Product> products = ProductIO.getProducts(path);
+            List<Product> products = ProductDB.selectProducts();
             request.setAttribute("products", products);
             url = "/home.jsp";
         }

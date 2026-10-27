@@ -557,3 +557,124 @@ label.remember {
     font-weight: normal;
     cursor: pointer;
 }
+
+/* admin */
+.admin-tag {
+    margin-left: 4px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #1f2328;
+    color: #fff;
+    font-size: 12px;
+    vertical-align: middle;
+}
+.admin-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.btn-auto {
+    width: auto;
+    margin-top: 0;
+    padding: 9px 18px;
+}
+a.btn-small {
+    display: inline-block;
+    color: #1f2328;
+    font-size: 13px;
+}
+a.btn-small:hover {
+    text-decoration: none;
+    background: #f6f6f7;
+}
+form.inline {
+    display: inline;
+    margin: 0;
+}
+.row-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+}
+.btn-small.btn-danger {
+    color: #d93025;
+    font-size: 13px;
+}
+.btn-small.btn-danger:hover {
+    background: #fdecea;
+    border-color: #f5c2bd;
+}
+a.btn-add {
+    display: inline-block;
+    padding: 7px 14px;
+    border-radius: 8px;
+    background: #ff8a5c;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+}
+a.btn-add:hover {
+    background: #f57340;
+    text-decoration: none;
+}
+.nowrap {
+    white-space: nowrap;
+}
+.muted {
+    color: #6b7280;
+    font-size: 12px;
+}
+.empty-row {
+    text-align: center !important;
+    color: #6b7280;
+    padding: 28px !important;
+}
+.status {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.status.pending {
+    background: #fff4ec;
+    color: #e8590c;
+}
+.status.done {
+    background: #e6f4ea;
+    color: #188038;
+}
+.tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 10px;
+}
+.tabs a {
+    padding: 6px 14px;
+    border-radius: 7px;
+    color: #6b7280;
+}
+.tabs a.active {
+    background: #fff4ec;
+    color: #e8590c;
+    font-weight: 600;
+}
+.tabs a:hover {
+    text-decoration: none;
+}
+.form-narrow {
+    max-width: 520px;
+}
+.form-narrow .btn-outline {
+    margin-top: 10px;
+}
+input:disabled {
+    background: #f6f6f7;
+    color: #6b7280;
+}

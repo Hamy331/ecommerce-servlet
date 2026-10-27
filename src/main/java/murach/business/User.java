@@ -10,6 +10,7 @@ public class User implements Serializable {
     private String email;
     private String passwordHash;
     private String salt;
+    private String role;
 
     public User() {
         firstName = "";
@@ -17,6 +18,7 @@ public class User implements Serializable {
         email = "";
         passwordHash = "";
         salt = "";
+        role = "customer";
     }
 
     public User(String firstName, String lastName, String email) {
@@ -25,6 +27,7 @@ public class User implements Serializable {
         this.email = email;
         this.passwordHash = "";
         this.salt = "";
+        this.role = "customer";
     }
 
     public long getUserId() {
@@ -73,5 +76,17 @@ public class User implements Serializable {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isAdmin() {
+        return "admin".equals(role);
     }
 }

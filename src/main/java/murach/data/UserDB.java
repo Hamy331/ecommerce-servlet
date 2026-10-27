@@ -134,6 +134,7 @@ public class UserDB {
                 user.setEmail(rs.getString("Email"));
                 user.setPasswordHash(rs.getString("PasswordHash"));
                 user.setSalt(rs.getString("Salt"));
+                user.setRole(rs.getString("Role"));
             }
             return user;
         } catch (SQLException e) {

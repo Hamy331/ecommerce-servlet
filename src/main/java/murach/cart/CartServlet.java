@@ -15,7 +15,7 @@ import murach.business.LineItem;
 import murach.business.Product;
 import murach.business.User;
 import murach.data.InvoiceDB;
-import murach.data.ProductIO;
+import murach.data.ProductDB;
 
 public class CartServlet extends HttpServlet {
 
@@ -49,8 +49,7 @@ public class CartServlet extends HttpServlet {
             }
 
             // chỉ mở giỏ hàng (bấm link "Giỏ hàng") thì không có productCode
-            String path = sc.getRealPath("/WEB-INF/products.txt");
-            Product product = ProductIO.getProduct(productCode, path);
+            Product product = ProductDB.selectProduct(productCode);
             if (product != null) {
                 //if the user enters a negative or invalid quantity,
                 //the quantity is automatically reset to 1.

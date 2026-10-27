@@ -26,6 +26,44 @@
         <servlet-name>CartServlet</servlet-name>
         <url-pattern>/cart</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ProductAdminServlet</servlet-name>
+        <servlet-class>murach.admin.ProductAdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductAdminServlet</servlet-name>
+        <url-pattern>/admin/products</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>InvoiceAdminServlet</servlet-name>
+        <servlet-class>murach.admin.InvoiceAdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InvoiceAdminServlet</servlet-name>
+        <url-pattern>/admin/orders</url-pattern>
+    </servlet-mapping>
+
+    <!-- Ch 20: filter chặn khu admin -->
+    <filter>
+        <filter-name>AdminFilter</filter-name>
+        <filter-class>murach.filters.AdminFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>CustomerFilter</filter-name>
+        <filter-class>murach.filters.CustomerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CustomerFilter</filter-name>
+        <url-pattern>/home</url-pattern>
+        <url-pattern>/cart</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

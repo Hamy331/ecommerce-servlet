@@ -17,6 +17,7 @@ public class Invoice implements Serializable {
     private String phone;
     private String address;
     private String paymentMethod;
+    private boolean processed;
 
     public Invoice() {
         lineItems = new ArrayList<LineItem>();
@@ -98,6 +99,18 @@ public class Invoice implements Serializable {
             return "Chuyển khoản ngân hàng";
         }
         return "Thanh toán khi nhận hàng (COD)";
+    }
+
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
     }
 
     public double getTotal() {
