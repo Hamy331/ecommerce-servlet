@@ -466,3 +466,85 @@ input.qty {
         min-height: 220px;
     }
 }
+
+/* thanh toán */
+.checkout {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 20px;
+    align-items: start;
+}
+.checkout-box {
+    background: #fff;
+    border: 1px solid #ececec;
+    border-radius: 12px;
+    padding: 20px 22px 22px;
+}
+.checkout-box h2 {
+    margin: 18px 0 4px;
+    font-size: 16px;
+}
+.checkout-box h2:first-child {
+    margin-top: 0;
+}
+label.radio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px 0 0;
+    padding: 10px 12px;
+    border: 1px solid #dcdfe4;
+    border-radius: 8px;
+    font-weight: normal;
+    cursor: pointer;
+}
+label.radio:has(input:checked) {
+    border-color: #ff8a5c;
+    background: #fff4ec;
+}
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.summary-row span:last-child {
+    text-align: right;
+}
+.summary-total {
+    border-bottom: 0;
+    font-weight: 600;
+}
+.checkout-box .btn-outline {
+    margin-top: 10px;
+}
+.thanks {
+    max-width: 520px;
+    margin: 12px auto 0;
+}
+.thanks h1 {
+    text-align: center;
+}
+.thanks-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: #e6f4ea;
+    color: #188038;
+    font-size: 26px;
+    line-height: 52px;
+    text-align: center;
+}
+.thanks h2 {
+    margin-top: 20px;
+}
+@media (max-width: 700px) {
+    .checkout {
+        grid-template-columns: 1fr;
+    }
+}
+.thanks .subtitle {
+    margin-bottom: 16px;
+}

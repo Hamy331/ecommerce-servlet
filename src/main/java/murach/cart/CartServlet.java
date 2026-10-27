@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import murach.business.Cart;
+import murach.business.Invoice;
 import murach.business.LineItem;
 import murach.business.Product;
+import murach.business.User;
+import murach.data.InvoiceDB;
 import murach.data.ProductIO;
 
 public class CartServlet extends HttpServlet {
@@ -21,6 +24,7 @@ public class CartServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
         ServletContext sc = getServletContext();
 
         // get current action
@@ -74,11 +78,65 @@ public class CartServlet extends HttpServlet {
             url = "/cart.jsp";
         }
         else if (action.equals("checkout")) {
-            url = "/checkout.jsp";
+            Cart cart = (Cart) request.getSession().getAttribute("cart");
+            if (cart == null || cart.getCount() == 0) {
+                url = "/cart.jsp";
+            } else {
+                url = "/checkout.jsp";
+            }
+        }
+        else if (action.equals("placeOrder")) {
+            url = placeOrder(request);
         }
 
         sc.getRequestDispatcher(url)
                 .forward(request, response);
+    }
+
+    private String placeOrder(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Cart cart = (Cart) session.getAttribute("cart");
+        User user = (User) session.getAttribute("user");
+        if (cart == null || cart.getCount() == 0) {
+            return "/cart.jsp";
+        }
+        if (user == null) {
+            return "/login.jsp";
+        }
+
+        String fullName = trim(request.getParameter("fullName"));
+        String phone = trim(request.getParameter("phone"));
+        String address = trim(request.getParameter("address"));
+        String paymentMethod = request.getParameter("paymentMethod");
+        if (!"bank".equals(paymentMethod)) {
+            paymentMethod = "cod";
+        }
+
+        Invoice invoice = new Invoice();
+        invoice.setUser(user);
+        invoice.setFullName(fullName);
+        invoice.setPhone(phone);
+        invoice.setAddress(address);
+        invoice.setPaymentMethod(paymentMethod);
+
+        if (fullName.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+            request.setAttribute("invoice", invoice);
+            request.setAttribute("message",
+                    "Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ.");
+            return "/checkout.jsp";
+        }
+
+        invoice.setLineItems(cart.getItems());
+        InvoiceDB.insert(invoice);
+
+        // đặt hàng xong thì làm trống giỏ
+        session.removeAttribute("cart");
+        request.setAttribute("invoice", invoice);
+        return "/thanks.jsp";
+    }
+
+    private static String trim(String s) {
+        return s == null ? "" : s.trim();
     }
 
     @Override
