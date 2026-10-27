@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,9 +12,12 @@ import javax.servlet.http.HttpSession;
 
 import murach.business.User;
 import murach.data.UserDB;
+import murach.util.CookieUtil;
 import murach.util.PasswordUtil;
 
 public class UserServlet extends HttpServlet {
+
+    private static final String REMEMBER_COOKIE = "rememberToken";
 
     @Override
     protected void doPost(HttpServletRequest request,
@@ -29,18 +33,27 @@ public class UserServlet extends HttpServlet {
         }
 
         if (action.equals("showLogin")) {
-            url = "/login.jsp";
+            url = autoLogin(request) ? "/home" : "/login.jsp";
         } else if (action.equals("showRegister")) {
             url = "/register.jsp";
         } else if (action.equals("register")) {
             url = register(request);
         } else if (action.equals("login")) {
-            url = login(request);
+            url = login(request, response);
         } else if (action.equals("logout")) {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();
             }
+
+            // xoá token và cookie ghi nhớ đăng nhập
+            String token = CookieUtil.getCookieValue(
+                    request.getCookies(), REMEMBER_COOKIE);
+            UserDB.deleteRememberToken(token);
+            Cookie c = new Cookie(REMEMBER_COOKIE, "");
+            c.setMaxAge(0);  // delete the cookie
+            c.setPath(request.getContextPath() + "/");
+            response.addCookie(c);
             request.setAttribute("message", "Bạn đã đăng xuất.");
             request.setAttribute("messageType", "success");
             url = "/login.jsp";
@@ -87,17 +100,22 @@ public class UserServlet extends HttpServlet {
             } catch (NoSuchAlgorithmException e) {
                 throw new ServletException(e);
             }
-            UserDB.insert(user);
-            message = "Đăng ký thành công! Hãy đăng nhập.";
-            request.setAttribute("messageType", "success");
-            request.setAttribute("email", email);
-            url = "/login.jsp";
+            if (UserDB.insert(user) > 0) {
+                message = "Đăng ký thành công! Hãy đăng nhập.";
+                request.setAttribute("messageType", "success");
+                request.setAttribute("email", email);
+                url = "/login.jsp";
+            } else {
+                message = "Không lưu được tài khoản. Vui lòng thử lại sau.";
+                url = "/register.jsp";
+            }
         }
         request.setAttribute("message", message);
         return url;
     }
 
-    private String login(HttpServletRequest request)
+    private String login(HttpServletRequest request,
+            HttpServletResponse response)
             throws ServletException {
         String email = trim(request.getParameter("email"));
         String password = request.getParameter("password");
@@ -121,12 +139,40 @@ public class UserServlet extends HttpServlet {
             HttpSession session = request.getSession();
             request.changeSessionId();  
             session.setAttribute("user", user);
+
+            // tick "Ghi nhớ đăng nhập" thì lưu cookie 30 ngày
+            if (request.getParameter("remember") != null) {
+                String token = PasswordUtil.getSalt();  // chuỗi ngẫu nhiên
+                UserDB.insertRememberToken(token, user.getEmail());
+                Cookie c = new Cookie(REMEMBER_COOKIE, token);
+                c.setMaxAge(60 * 60 * 24 * 30);  // set age to 30 days
+                c.setPath(request.getContextPath() + "/");
+                c.setHttpOnly(true);
+                response.addCookie(c);
+            }
             return "/home"; 
         } else {
             request.setAttribute("email", email);
             request.setAttribute("message", "Email hoặc mật khẩu không đúng.");
             return "/login.jsp";
         }
+    }
+
+    // đã đăng nhập, hoặc có cookie ghi nhớ hợp lệ thì vào thẳng trang chủ
+    private boolean autoLogin(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") != null) {
+            return true;
+        }
+        String token = CookieUtil.getCookieValue(
+                request.getCookies(), REMEMBER_COOKIE);
+        User user = UserDB.selectUserByRememberToken(token);
+        if (user == null) {
+            return false;
+        }
+        request.changeSessionId();
+        session.setAttribute("user", user);
+        return true;
     }
 
     private static String trim(String s) {

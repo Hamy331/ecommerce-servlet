@@ -4,11 +4,13 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
+    private long userId;
     private String firstName;
     private String lastName;
     private String email;
     private String passwordHash;
     private String salt;
+    private String role;
 
     public User() {
         firstName = "";
@@ -16,6 +18,7 @@ public class User implements Serializable {
         email = "";
         passwordHash = "";
         salt = "";
+        role = "customer";
     }
 
     public User(String firstName, String lastName, String email) {
@@ -24,6 +27,15 @@ public class User implements Serializable {
         this.email = email;
         this.passwordHash = "";
         this.salt = "";
+        this.role = "customer";
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -64,5 +76,17 @@ public class User implements Serializable {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isAdmin() {
+        return "admin".equals(role);
     }
 }

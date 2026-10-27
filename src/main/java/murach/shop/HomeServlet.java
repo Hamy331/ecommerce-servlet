@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import murach.business.Product;
-import murach.data.ProductIO;
+import murach.data.ProductDB;
 
 public class HomeServlet extends HttpServlet {
 
@@ -21,13 +21,39 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         ServletContext sc = getServletContext();
+
+        // get current action
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "home";  // default action
+        }
+
         HttpSession session = request.getSession();
         String url = "/home.jsp";
         if (session.getAttribute("user") == null) {
-            url = "/login.jsp";
+            url = "/user?action=showLogin";  // thử tự đăng nhập bằng cookie
+        } else if (action.equals("detail")) {
+            String productCode = request.getParameter("productCode");
+            Product product = ProductDB.selectProduct(productCode);
+            if (product != null) {
+                request.setAttribute("product", product);
+                url = "/product.jsp";
+            } else {
+                request.setAttribute("products", ProductDB.selectProducts());
+                url = "/home.jsp";
+            }
+        } else if (action.equals("search")) {
+            String keyword = request.getParameter("keyword");
+            keyword = (keyword == null) ? "" : keyword.trim();
+            List<Product> products = keyword.isEmpty()
+                    ? ProductDB.selectProducts()
+                    : ProductDB.selectProducts(keyword);
+            request.setAttribute("keyword", keyword);
+            request.setAttribute("products", products);
+            url = "/home.jsp";
         } else {
-            String path = sc.getRealPath("/WEB-INF/products.txt");
-            List<Product> products = ProductIO.getProducts(path);
+            // "home", hoặc action=login khi UserServlet forward sang
+            List<Product> products = ProductDB.selectProducts();
             request.setAttribute("products", products);
             url = "/home.jsp";
         }
